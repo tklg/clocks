@@ -1,0 +1,195 @@
+﻿body {
+    background: #000;
+    font-size: 17px;
+    overflow: hidden;
+    color: green;
+ /*   position: fixed;*/
+    width: 100%;
+    /*font-family: 'Coda', cursive;*/
+    font-family: 'Cutive Mono';
+    /*font-family: monospace;*/
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+
+
+}
+
+.clock {
+	width: 80vh;
+	height: 80vh;
+	margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.arc {
+	-webkit-transform-origin: center center;
+    -moz-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-transition: all .2s ease;
+        transition: all .2s ease;
+}
+
+.sec, .min, .hou, .second, .seconds {
+    -webkit-transition: color .2s ease;
+        transition: color .2s ease;
+    -webkit-backface-visibility: hidden;
+}
+
+.arc-seconds {
+	width: 70vh;
+	height: 70vh;
+	border-radius: 35vh;
+	margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    color: #0f0;
+}
+
+#a1, #a2, #a3, #a4, #a5, #a6 {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-backface-visibility: hidden;
+}
+
+.arc-minutes {
+	width: 44vh;
+	height: 44vh;
+	border-radius: 22vh;
+	margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    color: #f00;
+}
+
+.arc-hours {
+	width: 40vh;
+	height: 40vh;
+	border-radius: 20vh;
+	margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    color: #fff;
+}
+
+.arc-oclock {
+    width: 60vh;
+    height: 60vh;
+    border-radius: 30vh;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    color: #444;
+    display: none;
+}
+
+.arc-and {
+    width: 62vh;
+    height:62vh;
+    border-radius: 31vh;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    color: #444;
+}
+
+.arc-secondslabel {
+    width: 90vh;
+    height: 90vh;
+    border-radius: 45vh;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    color: #444;
+}
+
+span.sec {
+	height: 0px;
+    position: absolute;
+    width: 120px;
+    margin-left: 100%;
+    top: 50%;
+    -webkit-transform-origin: -35vh center;
+    -moz-transform-origin: -35vh center;
+    transform-origin: -35vh center;
+    text-align: left;
+}
+
+span.min {
+	height: 0px;
+    position: absolute;
+    width: 120px;
+    left: 100%;
+    top: 50%;
+    -webkit-transform-origin: -22vh center;
+    -moz-transform-origin: -22vh center;
+    transform-origin: -22vh center;
+    text-align: left;
+}
+
+span.hou {
+	height: 0px;
+    position: absolute;
+    width: 20vh;
+    left: 50%;
+    top: 50%;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    transform-origin: left center;
+    text-align: right;
+}
+
+span.oclock {
+    position: absolute;
+    width: 28vh;
+    left: 50%;
+    top: 50%;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    transform-origin: left center;
+    -webkit-transform: rotate(6deg);
+    transform: rotate(6deg);
+    text-align: right;
+}
+
+span.and {
+    height: 0px;
+    position: absolute;
+    width: 50px;
+    margin-left: 100%;
+    top: 50%;
+    -webkit-transform-origin: -20 center;
+    -moz-transform-origin: -20 center;
+    transform-origin: -20 center;
+    text-align: left;
+    color: #0f0;
+}
+
+span.second {
+    height: 0px;
+    position: absolute;
+    width: 120px;
+    margin-left: 100%;
+    top: 50%;
+    -webkit-transform-origin: -45vh center;
+    -moz-transform-origin: -45vh center;
+    transform-origin: -45vh center;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    text-align: left;
+    color: #0f0;
+}
+
+span.seconds {
+    height: 0px;
+    position: absolute;
+    width: 120px;
+    margin-left: 100%;
+    top: 50%;
+    -webkit-transform-origin: -45vh center;
+    -moz-transform-origin: -45vh center;
+    transform-origin: -45vh center;
+    -webkit-transform: rotate(-6deg);
+    transform: rotate(-6deg);
+    text-align: left;
+}

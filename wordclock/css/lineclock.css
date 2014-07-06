@@ -1,0 +1,50 @@
+body {
+    background: #000;
+    font-size: 17px;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    color: green;
+    /*font-family: 'Coda', cursive;*/
+    font-family: 'Cutive Mono';
+    /*font-family: monospace;*/
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    padding: 0px;
+
+
+}
+
+/*.clock {
+	height: 300px;
+	width: 100%;
+	margin-top: 50%;
+}*/
+
+.arc {
+	position: relative;
+	margin-right: 10px;
+}
+
+.arc-seconds {
+	/*right: 50px;*/
+	/*width: 150px;*/
+	float: right;
+	width: auto;
+	margin-right: 35%;
+}
+
+.arc-minutes {
+	/*right: 250px;*/
+	/*width: 150px;*/
+	float: right;
+	width: auto;
+}
+
+.arc-hours {
+	/*right: 500px;*/
+	/*width: 50px;*/
+	float: right;
+	width: auto;
+	height: 300px;
+}
