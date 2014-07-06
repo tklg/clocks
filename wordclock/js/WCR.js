@@ -1,37 +1,46 @@
-var angleS, angleM, angleH = 354;
+var d = new Date();
+var angleS, angleM, angleH = 0;
 var tA = 1;
-var tB = 0;
-var tC = 0;
+var tB = 1;
+var tC = 1;
+var s = d.getSeconds();
+var m = d.getMinutes();
+var h = d.getHours();
 
 var wordClockRound = {
-	s: d.getSeconds(),
-    m: d.getMinutes(),
-    h: d.getHours(),
 
     init: function() {
 
-        if (this.h > 12) {
-            this.h -= 12; //12 hour time
+        if (h > 12) {
+            h -= 12; //12 hour time
         }
-        console.log(this.h+':'+this.m+':'+this.s);
+		console.log(h+':'+m+':'+s);
+
+		$('#a1').css({
+            	'-webkit-transform': 'rotate(' + (s * -6 + 6) + 'deg)',
+            	'transform': 'rotate(' + (s * -6 + 6) + 'deg)'
+            });
+        $('#a2').css({
+            	'-webkit-transform': 'rotate(' + (m * -6 + 6) + 'deg)',
+            	'transform': 'rotate(' + (m * -6 + 6) + 'deg)'
+            });
+        $('#a3').css({
+            	'-webkit-transform': 'rotate(' + (h * -30 + 30) + 'deg)',
+            	'transform': 'rotate(' + (h * -30 + 30) + 'deg)'
+            });
 
         var angle = 0;
         //var angle = this.s * 6;
 
         for (var i = 0; i <= 60; i++) { //set initial angles of seconds strings
             var div = '.sec' + (i + 1);
-            if ((i + 1) == 1) { //check to see if the string is at the 0 (active) position
-                var tc = '#0F0';
-            } else {
-                var tc = '#555';
-            }
+            var tc = '#555';
 
             $(div).css({
                 '-webkit-transform': 'rotate(' + angle + 'deg)',
                 'transform': 'rotate(' + angle + 'deg)',
                 'color': tc
             })
-            //console.log(angle, i, div);
             angle += 6;
         };
 
@@ -40,11 +49,7 @@ var wordClockRound = {
 
         for (var i = 0; i <= 60; i++) { //and for the minute strings
             var div = '.min' + (i + 1);
-            if ((i + 1) == 1) {
-                var tc = '#0F0';
-            } else {
-                var tc = '#555';
-            }
+            var tc = '#555';
 
             $(div).css({
                 '-webkit-transform': 'rotate(' + angle + 'deg)',
@@ -59,11 +64,7 @@ var wordClockRound = {
 
         for (var i = 0; i <= 12; i++) { //and the hour strings
             var div = '.hou' + (i + 1);
-            if ((i + 1) == 1) {
-                var tc = '#0F0';
-            } else {
-                var tc = '#555';
-            }
+            var tc = '#555';
 
             $(div).css({
                 '-webkit-transform': 'rotate(' + angle + 'deg)',
@@ -73,26 +74,41 @@ var wordClockRound = {
             angle += 30;
         };
 
-        angleS = parseInt(getCurrRotation("a1"));
+        /*angleS = parseInt(getCurrRotation("a1"));
         angleM = parseInt(getCurrRotation("a2"));
-        angleH = parseInt(getCurrRotation("a3"));
+        angleH = parseInt(getCurrRotation("a3"));*/
+        angleS = (s * -6 + 6);
+        angleM = (m * -6 + 6);
+        angleH = (h * -30 + 30);
+        tA = s;
+        tB = m;
+        tC = h;
+        colChange('sec');
+        colChange('min');
+        colChange('hou');
+
+        console.log(angleS, angleM, angleH);
+
         setInterval(this.inc, 1000);
+
     },
 
     inc: function() {
 
-        //for every timestring, get the current rotation angle, and 
-        /*if (angleS > 0) {
-            angleS -= 6;
-        } else if (angleS == 0) {
-            angleS = 354;
-        }*/
         tA++;
         angleS -= 6;
+        angAnimS = angleS - 0.8;
         $('#a1').css({
-            	'-webkit-transform': 'rotate(' + angleS + 'deg)',
-            	'transform': 'rotate(' + angleS + 'deg)'
+            	'-webkit-transform': 'rotate(' + angAnimS + 'deg)',
+            	'transform': 'rotate(' + angAnimS + 'deg)'
             });
+        setTimeout(function() {
+        angAnimS += 0.8;
+        $('#a1').css({
+            	'-webkit-transform': 'rotate(' + angAnimS + 'deg)',
+            	'transform': 'rotate(' + angAnimS + 'deg)'
+            });
+        }, 176);
         colChange('sec');
 
         if (tA == 60) {
@@ -156,39 +172,29 @@ var wordClockRound = {
 }
 
 getCurrRotation = function(elid) {
-	var el = document.getElementById(elid);
-    var st = window.getComputedStyle(el, null);
-    var tr = st.getPropertyValue("-webkit-transform") ||
-       st.getPropertyValue("-moz-transform") ||
-       st.getPropertyValue("-ms-transform") ||
-       st.getPropertyValue("-o-transform") ||
-       st.getPropertyValue("transform") ||
-       "fail...";
 
-    if( tr !== "none") {
-    	//console.log('Matrix: ' + tr);
+  	var el = document.getElementById(elid);
+	var st = window.getComputedStyle(el, null);
+	var tr = st.getPropertyValue("-webkit-transform") ||
+	         st.getPropertyValue("-moz-transform") ||
+	         st.getPropertyValue("-ms-transform") ||
+	         st.getPropertyValue("-o-transform") ||
+	         st.getPropertyValue("transform") ||
+	         "fail...";
 
-    var values = tr.split('(')[1];
-      	values = values.split(')')[0];
-      	values = values.split(',');
-    var a = values[0];
-    var b = values[1];
-    var c = values[2];
-    var d = values[3];
+	var values = tr.split('(')[1];
+	    values = values.split(')')[0];
+	    values = values.split(',');
+	var a = values[0];
+	var b = values[1];
+	var c = values[2];
+	var d = values[3];
 
-    var scale = Math.sqrt(a*a + b*b);
+	var scale = Math.sqrt(a*a + b*b);
 
-    var radians = Math.atan2(b, a);
-	if ( radians < 0 ) {
-  	radians += (2 * Math.PI);
-	}
-	var angle = Math.round( radians * (180/Math.PI));
+	var angle = Math.round(Math.atan2(b, a) * (180/Math.PI));
 
-  	} else {
-    	var angle = 0;
-  	}
-  	//console.log(angle);
-  	return angle;
+	return angle;
 }
 
 getActive = function(arc) { //get active number
@@ -241,6 +247,10 @@ colChange = function(arc) { //change color of stuff
     	}
     	if (activeDiv[0] != '.' + arc + '60') { //fixes problem with 'precisely' staying lit
     		$('.' + arc + '60').css('color','#555');
+    	}
+    	if (activeDiv[0] == '.hou0') { //this fixes problem with hours at 0
+    		$('.' + arc + '1').css('color','#555');
+    		$('.' + arc + '12').css('color','#0f0');
     	}
     	$(activeDiv[0]).css('color','#0f0');
     	$(activeDiv[1]).css('color','#555');
