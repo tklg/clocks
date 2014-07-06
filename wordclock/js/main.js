@@ -1,8 +1,6 @@
 ﻿/*
 * Boop
 */
-var d = new Date();
-
 var wordClock = {
     init: function() {
         if (getQueryString('type') == 'round') {
