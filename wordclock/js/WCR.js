@@ -177,6 +177,10 @@ var wordClockRound = {
         }
 
         //change distance between each timestring because words are different lengths
+        setRadius('min');
+        setRadius('and');
+        setRadius('sec');
+        setRadius('seclab');
     }
 }
 
@@ -237,6 +241,65 @@ getWidth = function(arc) { //get width, in pixels, of the active number
         return strLen * 10;
 }
 
+setRadius = function(arc) {
+    if (arc == 'min') {
+        /*r = tw.hou();
+        arcMinutes.width = (r * 2);
+        arcMinutes.height = (r * 2);
+        arcMinutes.radius = r;
+        doitwithjavascriptinsteadofcss();
+        console.log('set min rad');*/
+    }
+    if (arc == 'and') {
+        r = tw.min();
+        arcAnd.width = (r * 2);
+        arcAnd.height = (r * 2);
+        arcAnd.radius = r;
+        doitwithjavascriptinsteadofcss();
+        //console.log('set min rad');
+    }
+    if (arc == 'sec') {
+        r = tw.and();
+        arcSeconds.width = (r * 2);
+        arcSeconds.height = (r * 2);
+        arcSeconds.radius = r;
+        doitwithjavascriptinsteadofcss();
+    }
+    if (arc == 'seclab') {
+        r = tw.sec();
+        arcSecondsLabel.width = (r * 2);
+        arcSecondsLabel.height = (r * 2);
+        arcSecondsLabel.radius = r;
+        doitwithjavascriptinsteadofcss();
+    }
+}
+
+var tw = {
+    hou: function() {
+        width = vhToPx(arcHours.radius) + getWidth('hou');
+        return pxToVh(width + 10);
+    },
+
+    min: function() {
+        width = vhToPx(arcMinutes.radius) + getWidth('min');
+        return pxToVh(width + 10);
+    },
+
+    sec: function() {
+        width = vhToPx(arcSeconds.radius) + getWidth('sec');
+        return pxToVh(width + 10);
+    },
+
+    and: function() {
+        if (tA != 0) {
+            width = vhToPx(arcAnd.radius) + 30; //"and" is 30px wide
+        } else {
+            width = vhToPx(arcAnd.radius);
+        }
+        return pxToVh(width + 10);
+    }
+}
+
 colChange = function(arc) { //change color of stuff
     	activeDiv = getActive(arc);
 
@@ -255,62 +318,76 @@ colChange = function(arc) { //change color of stuff
     	$(activeDiv[1]).css('color','#555');
     }
 
-var vh = winHeight/100;
 var arcSeconds = {
-    width: 70, //vh * 70, //replace the vh in the css with px
-    height: this.width,
-    radius: this.width / 2
+    width: 70,
+    height: 70,
+    radius: 35
 }
 var arcMinutes = {
     width: 36,
-    height: this.width,
-    radius: this.width / 2
+    height: 36,
+    radius: 18
 }
 var arcHours = {
     width: 34,
-    height: this.width,
-    radius: this.width / 2
+    height: 34,
+    radius: 17
+}
+var arcAnd = {
+    width: 62,
+    height: 62,
+    radius: 31
+}
+var arcSecondsLabel = {
+    width: 90,
+    height: 90,
+    radius: 45
 }
 
+vhToPx = function(vh) {
+    px = winHeight * (vh / 100);
+    return px;
+}
+pxToVh = function(px) {
+    vh = (px / winHeight) * 100;
+    return vh;
+}
 doitwithjavascriptinsteadofcss = function() { //makes it easier to change values of size and stuff
-    //winHeight and winWidth are things to use here
-    //1vh = 1/100 winHeight
-    //so the 70vh would be (winHeight/100)*70; ??
-    //minify this part because it takes up space
+
     $('.arc-seconds').css({
         'width':arcSeconds.width + 'vh',
         'height':arcSeconds.height + 'vh',
         'border-radius':arcSeconds.radius + 'vh'
     });
     $('.arc-minutes').css({
-        'width':'36vh',
-        'height':'36vh',
-        'border-radius':'18vh'
+        'width':arcMinutes.width + 'vh',
+        'height':arcMinutes.height + 'vh',
+        'border-radius':arcMinutes.radius + 'vh'
     });
     $('.arc-hours').css({
-        'width':'34vh',
-        'height':'34vh',
-        'border-radius':'17vh'
+        'width':arcHours.width + 'vh',
+        'height':arcHours.height + 'vh',
+        'border-radius':arcHours.radius + 'vh'
     });
     $('.arc-and').css({
-        'width':'62vh',
-        'height':'62vh',
-        'border-radius':'31vh'
+        'width':arcAnd.width + 'vh',
+        'height':arcAnd.height + 'vh',
+        'border-radius':arcAnd.radius + 'vh'
     });
     $('.arc-secondslabel').css({
-        'width':'90vh',
-        'height':'90vh',
-        'border-radius':'45vh'
+        'width':arcSecondsLabel.width + 'vh',
+        'height':arcSecondsLabel.height + 'vh',
+        'border-radius':arcSecondsLabel.radius + 'vh'
     });
     $('span.sec').css({
-        '-webkit-transform-origin': '-35vh center',
-        '-moz-transform-origin': '-35vh center',
-        'transform-origin': '-35vh center'
+        '-webkit-transform-origin': '-' + arcSeconds.radius + 'vh center',
+        '-moz-transform-origin': '-' + arcSeconds.radius + 'vh center',
+        'transform-origin': '-' + arcSeconds.radius + 'vh center'
     });
     $('span.min').css({
-        '-webkit-transform-origin': '-18vh center',
-        '-moz-transform-origin': '-18vh center',
-        'transform-origin': '-18vh center'
+        '-webkit-transform-origin': '-' + arcMinutes.radius + 'vh center',
+        '-moz-transform-origin': '-' + arcMinutes.radius + 'vh center',
+        'transform-origin': '-' + arcMinutes.radius + 'vh center'
     });
     $('span.hou').css({
         '-webkit-transform-origin': 'left center',
@@ -318,18 +395,18 @@ doitwithjavascriptinsteadofcss = function() { //makes it easier to change values
         'transform-origin': 'left center'
     });
     $('span.and').css({
-        '-webkit-transform-origin': '-20vh center',
-        '-moz-transform-origin': '-20vh center',
-        'transform-origin': '-20vh center'
+        '-webkit-transform-origin': '-' + arcAnd.radius + 'vh center',
+        '-moz-transform-origin': '-' + arcAnd.radius + 'vh center',
+        'transform-origin': '-' + arcAnd.radius + 'vh center'
     });
     $('span.second').css({
-        '-webkit-transform-origin': '-45vh center',
-        '-moz-transform-origin': '-45vh center',
-        'transform-origin': '-45vh center'
+        '-webkit-transform-origin': '-' + arcSecondsLabel.radius + 'vh center',
+        '-moz-transform-origin': '-' + arcSecondsLabel.radius + 'vh center',
+        'transform-origin': '-' + arcSecondsLabel.radius + 'vh center'
     });
     $('span.seconds').css({
-        '-webkit-transform-origin': '-45vh center',
-        '-moz-transform-origin': '-45vh center',
-        'transform-origin': '-45vh center'
+        '-webkit-transform-origin': '-' + arcSecondsLabel.radius + 'vh center',
+        '-moz-transform-origin': '-' + arcSecondsLabel.radius + 'vh center',
+        'transform-origin': '-' + arcSecondsLabel.radius + 'vh center'
     });
 }
