@@ -251,7 +251,6 @@ setRadius = function(arc) {
         arcAnd.height = (r * 2);
         arcAnd.radius = r;
         doitwithjavascriptinsteadofcss();
-        //console.log('set min rad');
     }
     if (arc == 'sec') {
         r = tw.and();
@@ -269,7 +268,7 @@ setRadius = function(arc) {
     }
 }
 
-var tw = {
+var tw = { //find total width
     hou: function() {
         width = vhToPx(arcHours.radius) + getWidth('hou');
         return pxToVh(width + 10);
@@ -289,7 +288,7 @@ var tw = {
         if (tA != 0) {
             width = vhToPx(arcAnd.radius) + 30; //"and" is 30px wide
         } else {
-            width = vhToPx(arcAnd.radius);
+            width = vhToPx(arcAnd.radius) - 10;
         }
         return pxToVh(width + 10);
     }
