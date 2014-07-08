@@ -1,10 +1,12 @@
-﻿body {
+﻿html{height: 100%; width: 100%;}
+body {
     background: #000;
     font-size: 17px;
     overflow: hidden;
     color: green;
- /*   position: fixed;*/
+    position: fixed;
     width: 100%;
+    height: 100%;
     /*font-family: 'Coda', cursive;*/
     font-family: 'Cutive Mono';
     /*font-family: monospace;*/
@@ -28,6 +30,7 @@
     transform-origin: center center;
     -webkit-transition: all .2s ease;
         transition: all .2s ease;
+        /*background: rgba(255,255,255,.05);*/
 }
 
 .sec, .min, .hou, .second, .seconds {
@@ -37,9 +40,6 @@
 }
 
 .arc-seconds {
-	width: 70vh;
-	height: 70vh;
-	border-radius: 35vh;
 	margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
@@ -51,9 +51,6 @@
 }
 
 .arc-minutes {
-	width: 44vh;
-	height: 44vh;
-	border-radius: 22vh;
 	margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
@@ -61,30 +58,13 @@
 }
 
 .arc-hours {
-	width: 40vh;
-	height: 40vh;
-	border-radius: 20vh;
 	margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
     color: #fff;
 }
 
-.arc-oclock {
-    width: 60vh;
-    height: 60vh;
-    border-radius: 30vh;
-    margin: auto;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    color: #444;
-    display: none;
-}
-
 .arc-and {
-    width: 62vh;
-    height:62vh;
-    border-radius: 31vh;
     margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
@@ -92,9 +72,6 @@
 }
 
 .arc-secondslabel {
-    width: 90vh;
-    height: 90vh;
-    border-radius: 45vh;
     margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
@@ -107,9 +84,6 @@ span.sec {
     width: 120px;
     margin-left: 100%;
     top: 50%;
-    -webkit-transform-origin: -35vh center;
-    -moz-transform-origin: -35vh center;
-    transform-origin: -35vh center;
     text-align: left;
 }
 
@@ -119,34 +93,15 @@ span.min {
     width: 120px;
     left: 100%;
     top: 50%;
-    -webkit-transform-origin: -22vh center;
-    -moz-transform-origin: -22vh center;
-    transform-origin: -22vh center;
     text-align: left;
 }
 
 span.hou {
 	height: 0px;
     position: absolute;
-    width: 20vh;
+    width: 17vh;
     left: 50%;
     top: 50%;
-    -webkit-transform-origin: left center;
-    -moz-transform-origin: left center;
-    transform-origin: left center;
-    text-align: right;
-}
-
-span.oclock {
-    position: absolute;
-    width: 28vh;
-    left: 50%;
-    top: 50%;
-    -webkit-transform-origin: left center;
-    -moz-transform-origin: left center;
-    transform-origin: left center;
-    -webkit-transform: rotate(6deg);
-    transform: rotate(6deg);
     text-align: right;
 }
 
@@ -156,9 +111,6 @@ span.and {
     width: 50px;
     margin-left: 100%;
     top: 50%;
-    -webkit-transform-origin: -20 center;
-    -moz-transform-origin: -20 center;
-    transform-origin: -20 center;
     text-align: left;
     color: #0f0;
 }
@@ -169,9 +121,6 @@ span.second {
     width: 120px;
     margin-left: 100%;
     top: 50%;
-    -webkit-transform-origin: -45vh center;
-    -moz-transform-origin: -45vh center;
-    transform-origin: -45vh center;
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
     text-align: left;
@@ -184,9 +133,6 @@ span.seconds {
     width: 120px;
     margin-left: 100%;
     top: 50%;
-    -webkit-transform-origin: -45vh center;
-    -moz-transform-origin: -45vh center;
-    transform-origin: -45vh center;
     -webkit-transform: rotate(-6deg);
     transform: rotate(-6deg);
     text-align: left;

@@ -6,10 +6,14 @@ var tC = 1;
 var s = d.getSeconds();
 var m = d.getMinutes();
 var h = d.getHours();
+var winHeight = $(window).height();
+var winWidth = $(window).width();
 
 var wordClockRound = {
 
     init: function() {
+
+        doitwithjavascriptinsteadofcss(); //best function name
 
         if (h > 12) {
             h -= 12; //12 hour time
@@ -30,7 +34,6 @@ var wordClockRound = {
             });
 
         var angle = 0;
-        //var angle = this.s * 6;
 
         for (var i = 0; i <= 60; i++) { //set initial angles of seconds strings
             var div = '.sec' + (i + 1);
@@ -45,7 +48,6 @@ var wordClockRound = {
         };
 
         angle = 0; //reset to 0 for the next circle
-        //angle = this.m * 6;
 
         for (var i = 0; i <= 60; i++) { //and for the minute strings
             var div = '.min' + (i + 1);
@@ -60,7 +62,6 @@ var wordClockRound = {
         };
 
         angle = 0;
-        //angle = this.h * 30;
 
         for (var i = 0; i <= 12; i++) { //and the hour strings
             var div = '.hou' + (i + 1);
@@ -74,9 +75,15 @@ var wordClockRound = {
             angle += 30;
         };
 
-        /*angleS = parseInt(getCurrRotation("a1"));
-        angleM = parseInt(getCurrRotation("a2"));
-        angleH = parseInt(getCurrRotation("a3"));*/
+        if (s > 1) {
+            $('#a6').css({
+                '-webkit-transform': 'rotate(6deg)',
+                'transform': 'rotate(6deg)'
+                });
+            $('.second').css('color','#555');
+            $('.seconds').css('color','#0f0');
+        }
+
         angleS = (s * -6 + 6);
         angleM = (m * -6 + 6);
         angleH = (h * -30 + 30);
@@ -168,11 +175,12 @@ var wordClockRound = {
         	$('.seconds').css('color','#555');
         	$('.and').css('color','#555');
         }
+
+        //change distance between each timestring because words are different lengths
     }
 }
 
 getCurrRotation = function(elid) {
-
   	var el = document.getElementById(elid);
 	var st = window.getComputedStyle(el, null);
 	var tr = st.getPropertyValue("-webkit-transform") ||
@@ -223,19 +231,10 @@ getActive = function(arc) { //get active number
 	}
 }
 
-getWidth = function(arc) {
-	if (arc == 'sec') {
+getWidth = function(arc) { //get width, in pixels, of the active number
 		activeDiv = getActive(arc);
-		strLen = $(activediv[0]).text().length;
-	}
-
-	if (arc == 'min') {
-
-	}
-
-	if (arc == 'hou') {
-
-	}
+		strLen = $(activeDiv[0]).text().length;
+        return strLen * 10;
 }
 
 colChange = function(arc) { //change color of stuff
@@ -255,3 +254,82 @@ colChange = function(arc) { //change color of stuff
     	$(activeDiv[0]).css('color','#0f0');
     	$(activeDiv[1]).css('color','#555');
     }
+
+var vh = winHeight/100;
+var arcSeconds = {
+    width: 70, //vh * 70, //replace the vh in the css with px
+    height: this.width,
+    radius: this.width / 2
+}
+var arcMinutes = {
+    width: 36,
+    height: this.width,
+    radius: this.width / 2
+}
+var arcHours = {
+    width: 34,
+    height: this.width,
+    radius: this.width / 2
+}
+
+doitwithjavascriptinsteadofcss = function() { //makes it easier to change values of size and stuff
+    //winHeight and winWidth are things to use here
+    //1vh = 1/100 winHeight
+    //so the 70vh would be (winHeight/100)*70; ??
+    //minify this part because it takes up space
+    $('.arc-seconds').css({
+        'width':arcSeconds.width + 'vh',
+        'height':arcSeconds.height + 'vh',
+        'border-radius':arcSeconds.radius + 'vh'
+    });
+    $('.arc-minutes').css({
+        'width':'36vh',
+        'height':'36vh',
+        'border-radius':'18vh'
+    });
+    $('.arc-hours').css({
+        'width':'34vh',
+        'height':'34vh',
+        'border-radius':'17vh'
+    });
+    $('.arc-and').css({
+        'width':'62vh',
+        'height':'62vh',
+        'border-radius':'31vh'
+    });
+    $('.arc-secondslabel').css({
+        'width':'90vh',
+        'height':'90vh',
+        'border-radius':'45vh'
+    });
+    $('span.sec').css({
+        '-webkit-transform-origin': '-35vh center',
+        '-moz-transform-origin': '-35vh center',
+        'transform-origin': '-35vh center'
+    });
+    $('span.min').css({
+        '-webkit-transform-origin': '-18vh center',
+        '-moz-transform-origin': '-18vh center',
+        'transform-origin': '-18vh center'
+    });
+    $('span.hou').css({
+        '-webkit-transform-origin': 'left center',
+        '-moz-transform-origin': 'left center',
+        'transform-origin': 'left center'
+    });
+    $('span.and').css({
+        '-webkit-transform-origin': '-20vh center',
+        '-moz-transform-origin': '-20vh center',
+        'transform-origin': '-20vh center'
+    });
+    $('span.second').css({
+        '-webkit-transform-origin': '-45vh center',
+        '-moz-transform-origin': '-45vh center',
+        'transform-origin': '-45vh center'
+    });
+    $('span.seconds').css({
+        '-webkit-transform-origin': '-45vh center',
+        '-moz-transform-origin': '-45vh center',
+        'transform-origin': '-45vh center'
+    });
+}
