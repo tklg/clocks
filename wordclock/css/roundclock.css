@@ -16,21 +16,12 @@ body {
 
 }
 
-.clock {
-	width: 80vh;
-	height: 80vh;
-	margin: auto;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-}
-
 .arc {
-	-webkit-transform-origin: center center;
-    -moz-transform-origin: center center;
-    transform-origin: center center;
+	-webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
     -webkit-transition: all .2s ease;
         transition: all .2s ease;
-        background: rgba(255,255,255,.03);
 }
 
 .sec, .min, .hou, .second, .seconds {
@@ -41,7 +32,7 @@ body {
 
 .arc-seconds {
 	margin: auto;
-    position: absolute;
+    position: absolute !important;
     top: 0; left: 0; bottom: 0; right: 0;
     color: #0f0;
 }
@@ -52,28 +43,28 @@ body {
 
 .arc-minutes {
 	margin: auto;
-    position: absolute;
+    position: absolute !important;
     top: 0; left: 0; bottom: 0; right: 0;
     color: #f00;
 }
 
 .arc-hours {
 	margin: auto;
-    position: absolute;
+    position: absolute !important;
     top: 0; left: 0; bottom: 0; right: 0;
     color: #fff;
 }
 
 .arc-and {
     margin: auto;
-    position: absolute;
+    position: absolute !important;
     top: 0; left: 0; bottom: 0; right: 0;
-    color: #444;
+    color: #444;    
 }
 
 .arc-secondslabel {
     margin: auto;
-    position: absolute;
+    position: absolute !important;
     top: 0; left: 0; bottom: 0; right: 0;
     color: #444;
 }

@@ -243,12 +243,7 @@ getWidth = function(arc) { //get width, in pixels, of the active number
 
 setRadius = function(arc) {
     if (arc == 'min') {
-        /*r = tw.hou();
-        arcMinutes.width = (r * 2);
-        arcMinutes.height = (r * 2);
-        arcMinutes.radius = r;
-        doitwithjavascriptinsteadofcss();
-        console.log('set min rad');*/
+//minutes dont move
     }
     if (arc == 'and') {
         r = tw.min();
