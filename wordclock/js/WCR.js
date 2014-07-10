@@ -1,3 +1,5 @@
+/*Problems: currently treats all 'o'clock' and 'one' as being either 0 or 8 characters long and I dont know why*/
+
 var d = new Date();
 var angleS, angleM, angleH = 0;
 var tA = 1;
@@ -8,12 +10,33 @@ var m = d.getMinutes();
 var h = d.getHours();
 var winHeight = $(window).height();
 var winWidth = $(window).width();
+var widthSpace = 10; /*Space width in px*/
+var widthFont = 10; /*font width in px*/
 
 var wordClockRound = {
 
     init: function() {
 
         doitwithjavascriptinsteadofcss(); //best function name
+
+        if(typeof(colorFontInactive) != 'undefined') {
+            //cfIN = cfIN
+        } else {
+            colorFontInactive = '#555';
+            console.log('Color for inactive font not defined');
+        }
+        if(typeof(colorFontActive) != 'undefined') {
+            //cfA = cfA
+        } else {
+            colorFontActive = '#0F0';
+            console.log('Color for active font not defined');
+        }
+        if(typeof(colorBackground) != 'undefined') {
+            $('body').css('background',colorBackground);
+        } else {
+            colorBackground = "#000";
+            console.log('Color for background not defined');
+        }
 
         if (h > 12) {
             h -= 12; //12 hour time
@@ -37,7 +60,7 @@ var wordClockRound = {
 
         for (var i = 0; i <= 60; i++) { //set initial angles of seconds strings
             var div = '.sec' + (i + 1);
-            var tc = '#555';
+            var tc = colorFontInactive;
 
             $(div).css({
                 '-webkit-transform': 'rotate(' + angle + 'deg)',
@@ -51,7 +74,7 @@ var wordClockRound = {
 
         for (var i = 0; i <= 60; i++) { //and for the minute strings
             var div = '.min' + (i + 1);
-            var tc = '#555';
+            var tc = colorFontInactive;
 
             $(div).css({
                 '-webkit-transform': 'rotate(' + angle + 'deg)',
@@ -65,7 +88,7 @@ var wordClockRound = {
 
         for (var i = 0; i <= 12; i++) { //and the hour strings
             var div = '.hou' + (i + 1);
-            var tc = '#555';
+            var tc = colorFontInactive;
 
             $(div).css({
                 '-webkit-transform': 'rotate(' + angle + 'deg)',
@@ -94,7 +117,7 @@ var wordClockRound = {
         colChange('min');
         colChange('hou');
 
-        console.log(angleS, angleM, angleH);
+        //console.log(angleS, angleM, angleH);
 
         setInterval(this.inc, 1000);
 
@@ -148,8 +171,8 @@ var wordClockRound = {
             	'-webkit-transform': 'rotate(6deg)',
             	'transform': 'rotate(6deg)'
             	});
-        	$('.second').css('color','#555');
-        	$('.seconds').css('color','#0f0');
+        	$('.second').css('color',colorFontInactive);
+        	$('.seconds').css('color',colorFontActive);
         } else if (tA == 1) {
         	$('#a6').css({
             	'-webkit-transform': 'rotate(0deg)',
@@ -159,9 +182,9 @@ var wordClockRound = {
         		'-webkit-transform': 'rotate(0deg)',
             	'transform': 'rotate(0deg)'
         	})
-        	$('.second').css('color','#0f0');
-        	$('.seconds').css('color','#555');
-        	$('.and').css('color','#0f0');
+        	$('.second').css('color',colorFontActive);
+        	$('.seconds').css('color',colorFontInactive);
+        	$('.and').css('color',colorFontActive);
         } else if (tA == 0) {
         	$('#a6').css({
             	'-webkit-transform': 'rotate(3deg)',
@@ -171,9 +194,9 @@ var wordClockRound = {
         		'-webkit-transform': 'rotate(6deg)',
             	'transform': 'rotate(6deg)'
         	})
-        	$('.second').css('color','#555');
-        	$('.seconds').css('color','#555');
-        	$('.and').css('color','#555');
+        	$('.second').css('color',colorFontInactive);
+        	$('.seconds').css('color',colorFontInactive);
+        	$('.and').css('color',colorFontInactive);
         }
 
         //change distance between each timestring because words are different lengths
@@ -238,7 +261,7 @@ getActive = function(arc) { //get active number
 getWidth = function(arc) { //get width, in pixels, of the active number
 		activeDiv = getActive(arc);
 		strLen = $(activeDiv[0]).text().length;
-        return strLen * 10;
+        return strLen * widthFont;
 }
 
 setRadius = function(arc) {
@@ -271,26 +294,26 @@ setRadius = function(arc) {
 var tw = { //find total width
     hou: function() {
         width = vhToPx(arcHours.radius) + getWidth('hou');
-        return pxToVh(width + 10);
+        return pxToVh(width + widthSpace);
     },
 
     min: function() {
         width = vhToPx(arcMinutes.radius) + getWidth('min');
-        return pxToVh(width + 10);
+        return pxToVh(width + widthSpace);
     },
 
     sec: function() {
         width = vhToPx(arcSeconds.radius) + getWidth('sec');
-        return pxToVh(width + 10);
+        return pxToVh(width + widthSpace);
     },
 
     and: function() {
         if (tA != 0) {
-            width = vhToPx(arcAnd.radius) + 30; //"and" is 30px wide
+            width = vhToPx(arcAnd.radius) + (widthFont * 3); //"and" is 30px wide
         } else {
-            width = vhToPx(arcAnd.radius) - 10;
+            width = vhToPx(arcAnd.radius) - widthSpace;
         }
-        return pxToVh(width + 10);
+        return pxToVh(width + widthSpace);
     }
 }
 
@@ -298,18 +321,18 @@ colChange = function(arc) { //change color of stuff
     	activeDiv = getActive(arc);
 
     	if (activeDiv[0] == '.' + arc + '61') { //this fixes problem with it counting to 61
-    		$('.' + arc + '60').css('color','#555');
-    		$('.' + arc + '1').css('color','#0f0');
+    		$('.' + arc + '60').css('color',colorFontInactive);
+    		$('.' + arc + '1').css('color',colorFontActive);
     	}
     	if (activeDiv[0] != '.' + arc + '60') { //fixes problem with 'precisely' staying lit
-    		$('.' + arc + '60').css('color','#555');
+    		$('.' + arc + '60').css('color',colorFontInactive);
     	}
     	if (activeDiv[0] == '.hou0') { //this fixes problem with hours at 0
-    		$('.' + arc + '1').css('color','#555');
-    		$('.' + arc + '12').css('color','#0f0');
+    		$('.' + arc + '1').css('color',colorFontInactive);
+    		$('.' + arc + '12').css('color',colorFontActive);
     	}
-    	$(activeDiv[0]).css('color','#0f0');
-    	$(activeDiv[1]).css('color','#555');
+    	$(activeDiv[0]).css({'color':colorFontActive,'z-index':10});
+    	$(activeDiv[1]).css({'color':colorFontInactive,'z-index':1});
     }
 
 var arcSeconds = {
