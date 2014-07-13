@@ -4,12 +4,12 @@
 var wordClock = {
     init: function() {
         /*colors*/
-        var colorFontInactive = '"#' + getQueryString('f') + '"';
+/*        var colorFontInactive = '"#' + getQueryString('f') + '"';
         var colorFontActive = '"#' + getQueryString('a') + '"';
         var colorBackground = '"#' + getQueryString('b') + '"';
         console.log(colorFontInactive);
         console.log(colorFontActive);
-        console.log(colorBackground);
+        console.log(colorBackground);*/
         if (getQueryString('type') == 'round') {
             $('.arc-seconds').lettering('seconds');
             $('.arc-minutes').lettering('minutes');

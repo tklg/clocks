@@ -1,4 +1,5 @@
 /*Problems: currently treats all 'o'clock' and 'one' as being either 0 or 8 characters long and I dont know why*/
+/*Am assuming this has something to do with the 60-61-0 end value rollover thing thats causing all the other problems*/
 
 var d = new Date();
 var angleS, angleM, angleH = 0;
@@ -13,30 +14,50 @@ var winWidth = $(window).width();
 var widthSpace = 10; /*Space width in px*/
 var widthFont = 10; /*font width in px*/
 
+getQueryString = function(name) { //duplicate funstions yay
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+var cFI = getQueryString('f');
+var cFA = getQueryString('a');
+var cBG = getQueryString('b');
+console.log(cFI);
+console.log(cFA);
+console.log(cBG);
+
+        if(cFI === '') {
+            var colorFontInactive = '#555';
+            console.log('Color for inactive font not defined');
+        } else {
+            var colorFontInactive = '#' + cFI;
+            console.log("Set inactive color to " + cFI);
+        }
+        if(cFA === '') {
+            var colorFontActive = '#0F0';
+            console.log('Color for active font not defined');
+        } else {
+            var colorFontActive = '#' + cFA;
+            console.log("Set active color to " + cFA);
+        }
+        if(cBG === '') {
+            var colorBackground = "#000";
+            console.log('Color for background not defined');
+        } else {
+            $('body').css('background','#' + cBG);
+            var colorBackground = '#' + cBG;
+            console.log("Set background color to " + cBG);
+        }
+
+        
+
 var wordClockRound = {
 
     init: function() {
 
         doitwithjavascriptinsteadofcss(); //best function name
-
-        if(typeof(colorFontInactive) != 'undefined') {
-            //cfIN = cfIN
-        } else {
-            colorFontInactive = '#555';
-            console.log('Color for inactive font not defined');
-        }
-        if(typeof(colorFontActive) != 'undefined') {
-            //cfA = cfA
-        } else {
-            colorFontActive = '#0F0';
-            console.log('Color for active font not defined');
-        }
-        if(typeof(colorBackground) != 'undefined') {
-            $('body').css('background',colorBackground);
-        } else {
-            colorBackground = "#000";
-            console.log('Color for background not defined');
-        }
 
         if (h > 12) {
             h -= 12; //12 hour time
@@ -103,8 +124,8 @@ var wordClockRound = {
                 '-webkit-transform': 'rotate(6deg)',
                 'transform': 'rotate(6deg)'
                 });
-            $('.second').css('color','#555');
-            $('.seconds').css('color','#0f0');
+            $('.second').css('color',colorFontInactive);
+            $('.seconds').css('color',colorFontActive);
         }
 
         angleS = (s * -6 + 6);
@@ -113,123 +134,102 @@ var wordClockRound = {
         tA = s;
         tB = m;
         tC = h;
+        wordClockRound.setColors(); //set colors of things that are not time  
         colChange('sec');
         colChange('min');
         colChange('hou');
 
-        //console.log(angleS, angleM, angleH);
-
-        setInterval(this.inc, 1000);
+        setInterval(wordClockRound.inc, 1000);
 
     },
 
     inc: function() {
 
-        tA++;
-        angleS -= 6;
-        angAnimS = angleS - 0.8;
-        $('#a1').css({
-            	'-webkit-transform': 'rotate(' + angAnimS + 'deg)',
-            	'transform': 'rotate(' + angAnimS + 'deg)'
-            });
-        setTimeout(function() {
-        angAnimS += 0.8;
-        $('#a1').css({
-            	'-webkit-transform': 'rotate(' + angAnimS + 'deg)',
-            	'transform': 'rotate(' + angAnimS + 'deg)'
-            });
-        }, 176);
-        colChange('sec');
+            tA++;
+            angleS -= 6;
+            angAnimS = angleS - 0.8;
+            $('#a1').css({
+                	'-webkit-transform': 'rotate(' + angAnimS + 'deg)',
+                	'transform': 'rotate(' + angAnimS + 'deg)'
+                });
+            setTimeout(function() {
+            angAnimS += 0.8;
+            $('#a1').css({
+                	'-webkit-transform': 'rotate(' + angAnimS + 'deg)',
+                	'transform': 'rotate(' + angAnimS + 'deg)'
+                });
+            }, 176);
+            colChange('sec');
 
-        if (tA == 60) {
-        	console.log("minute");
-			angleM -= 6;
-        	$('#a2').css({
-            	'-webkit-transform': 'rotate(' + angleM + 'deg)',
-            	'transform': 'rotate(' + angleM + 'deg)'
-            	});
-        	tA = 0;
-        	colChange('min');
-        	tB++;
-        }
-        if (tB == 60) {
-			angleH -= 30;
-        	$('#a3').css({
-            	'-webkit-transform': 'rotate(' + angleH + 'deg)',
-            	'transform': 'rotate(' + angleH + 'deg)'
-            	});
-        	tB = 0;
-        	colChange('hou');
-        	tC++;
-        }
-        if (tC == 12) {
-        	tC = 0;
-        }
+            if (tA == 60) {
+            	console.log("minute");
+    			angleM -= 6;
+            	$('#a2').css({
+                	'-webkit-transform': 'rotate(' + angleM + 'deg)',
+                	'transform': 'rotate(' + angleM + 'deg)'
+                	});
+            	tA = 0;
+            	colChange('min');
+            	tB++;
+            }
+            if (tB == 60) {
+    			angleH -= 30;
+            	$('#a3').css({
+                	'-webkit-transform': 'rotate(' + angleH + 'deg)',
+                	'transform': 'rotate(' + angleH + 'deg)'
+                	});
+            	tB = 0;
+            	colChange('hou');
+            	tC++;
+            }
+            if (tC == 12) {
+            	tC = 0;
+            }
         //stuff to change the angle of the second/seconds and and
-        if (tA > 1) {
-        	$('#a6').css({
-            	'-webkit-transform': 'rotate(6deg)',
-            	'transform': 'rotate(6deg)'
-            	});
-        	$('.second').css('color',colorFontInactive);
-        	$('.seconds').css('color',colorFontActive);
-        } else if (tA == 1) {
-        	$('#a6').css({
-            	'-webkit-transform': 'rotate(0deg)',
-            	'transform': 'rotate(0deg)'
-            	});
-        	$('#a5').css({
-        		'-webkit-transform': 'rotate(0deg)',
-            	'transform': 'rotate(0deg)'
-        	})
-        	$('.second').css('color',colorFontActive);
-        	$('.seconds').css('color',colorFontInactive);
-        	$('.and').css('color',colorFontActive);
-        } else if (tA == 0) {
-        	$('#a6').css({
-            	'-webkit-transform': 'rotate(3deg)',
-            	'transform': 'rotate(3deg)'
-            	});
-        	$('#a5').css({
-        		'-webkit-transform': 'rotate(6deg)',
-            	'transform': 'rotate(6deg)'
-        	})
-        	$('.second').css('color',colorFontInactive);
-        	$('.seconds').css('color',colorFontInactive);
-        	$('.and').css('color',colorFontInactive);
-        }
+            wordClockRound.setColors();   
 
         //change distance between each timestring because words are different lengths
         setRadius('min');
         setRadius('and');
         setRadius('sec');
         setRadius('seclab');
+    }, 
+
+    setColors: function() {
+        if (tA > 1) {
+            $('#a6').css({
+                '-webkit-transform': 'rotate(6deg)',
+                'transform': 'rotate(6deg)'
+                });
+            $('.second').css('color',colorFontInactive);
+            $('.seconds').css('color',colorFontActive);
+            $('.and').css('color',colorFontActive);
+        } else if (tA == 1) {
+            $('#a6').css({
+                '-webkit-transform': 'rotate(0deg)',
+                'transform': 'rotate(0deg)'
+                });
+            $('#a5').css({
+                '-webkit-transform': 'rotate(0deg)',
+                'transform': 'rotate(0deg)'
+            })
+            $('.second').css('color',colorFontActive);
+            $('.seconds').css('color',colorFontInactive);
+            $('.and').css('color',colorFontActive);
+        } else if (tA == 0) {
+            $('#a6').css({
+                '-webkit-transform': 'rotate(3deg)',
+                'transform': 'rotate(3deg)'
+                });
+            $('#a5').css({
+                '-webkit-transform': 'rotate(6deg)',
+                'transform': 'rotate(6deg)'
+            })
+            $('.second').css('color',colorFontInactive);
+            $('.seconds').css('color',colorFontInactive);
+            $('.and').css('color',colorFontInactive);
+        }
     }
-}
-
-getCurrRotation = function(elid) {
-  	var el = document.getElementById(elid);
-	var st = window.getComputedStyle(el, null);
-	var tr = st.getPropertyValue("-webkit-transform") ||
-	         st.getPropertyValue("-moz-transform") ||
-	         st.getPropertyValue("-ms-transform") ||
-	         st.getPropertyValue("-o-transform") ||
-	         st.getPropertyValue("transform") ||
-	         "fail...";
-
-	var values = tr.split('(')[1];
-	    values = values.split(')')[0];
-	    values = values.split(',');
-	var a = values[0];
-	var b = values[1];
-	var c = values[2];
-	var d = values[3];
-
-	var scale = Math.sqrt(a*a + b*b);
-
-	var angle = Math.round(Math.atan2(b, a) * (180/Math.PI));
-
-	return angle;
 }
 
 getActive = function(arc) { //get active number

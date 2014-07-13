@@ -88,7 +88,6 @@ div.color-picker > input[type='radio']#lines + label {
 div.color-picker > input[type='radio']#round + label {
     border-radius: 25px;
 }
-
 div.color-picker > input[type='radio']:checked + label {
     background: rgba(0,255,0,.15);
 }
