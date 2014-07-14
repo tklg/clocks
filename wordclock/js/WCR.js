@@ -24,9 +24,6 @@ getQueryString = function(name) { //duplicate funstions yay
 var cFI = getQueryString('f');
 var cFA = getQueryString('a');
 var cBG = getQueryString('b');
-console.log(cFI);
-console.log(cFA);
-console.log(cBG);
 
         if(cFI === '') {
             var colorFontInactive = '#555';
@@ -50,7 +47,6 @@ console.log(cBG);
             var colorBackground = '#' + cBG;
             console.log("Set background color to " + cBG);
         }
-
         
 
 var wordClockRound = {
@@ -138,6 +134,9 @@ var wordClockRound = {
         colChange('sec');
         colChange('min');
         colChange('hou');
+
+        $('a.config').attr('href','config.html?type=round&f=' + cFI + '&a=' + cFA + '&b=' + cBG);
+        /*console.log('config url is: config.html/?type=round&f=' + cFI + '&a=' + cFA + '&b=' + cBG);*/
 
         setInterval(wordClockRound.inc, 1000);
 

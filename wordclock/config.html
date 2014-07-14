@@ -21,7 +21,7 @@
 
   </head>
 	<body>
-
+<a onCLick="return setLinkContent()" href="index.html?type=round" class='config' style="position:fixed;bottom:20px;color:red">CLOCK</a>	
 		<section>
 		<h4>
 		Type
@@ -54,6 +54,73 @@
     </body>
 
     <script type='text/javascript'>
+
+    getQueryString = function(name) {
+	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
+	delChar = function(string, char) {
+		var s = string;
+		while(s.charAt(0) === char) {
+    		s = s.substr(1);
+    	}
+    	return s;
+	}
+
+	setLinkContent = function() {
+		var cFI = delChar(cIN, '#');
+		var cFA = delChar(cAC, '#');
+		var cBG = delChar(cBG, '#');
+
+		$('a.config').attr('href','config.html?type=' + $('input[type]').val() + '&f=' + cFI + '&a=' + cFA + '&b=' + cBG);
+
+		return true;
+	}
+
+	var cFI = getQueryString('f');
+	var cFA = getQueryString('a');
+	var cBG = getQueryString('b');
+	var type = getQueryString('type');
+
+        if(cFI === '') {
+            var colorFontInactive = '#555';
+            console.log('Color for inactive font not defined');
+        } else {
+            var colorFontInactive = '#' + cFI;
+            console.log("Set inactive color to " + cFI);
+        }
+        if(cFA === '') {
+            var colorFontActive = '#0F0';
+            console.log('Color for active font not defined');
+        } else {
+            var colorFontActive = '#' + cFA;
+            console.log("Set active color to " + cFA);
+        }
+        if(cBG === '') {
+            var colorBackground = "#000";
+            console.log('Color for background not defined');
+        } else {
+            $('body').css('background','#' + cBG);
+            var colorBackground = '#' + cBG;
+            console.log("Set background color to " + cBG);
+        }
+        if(type == 'round') {
+        	$('input#round').prop('checked',true);
+        } else if (type == 'block') {
+        	$('input#square').prop('checked',true);
+        } else if (type == 'line') {
+        	$('input#lines').prop('checked',true);
+        } else {
+        	$('input#round').prop('checked',true);
+        }
+
+    $('.inactive').val(colorFontInactive);
+    $('.active').val(colorFontActive);
+    $('.background').val(colorBackground);
+
     $('input.inactive')
 	  .keyup(function() {
 	  	if ($(this).val().length == 4 || $(this).val().length == 7) {
