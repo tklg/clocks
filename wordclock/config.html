@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>WordClock Config</title>
+
+<!-- jQuery v2 -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="css/config.css">
+		
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+	<body>
+<a onCLick="return setLinkContent()" href="index.html?type=round" class='config' style="position:fixed;bottom:20px;color:red">CLOCK</a>	
+		<section>
+		<h4>
+		Type
+		</h4>
+			<div class="color-picker noborder">
+				<input name="type" type="radio" id="square" value="square"><label for="square">A</label>
+				<input name="type" type="radio" id="lines" value="lines"><label for="lines">B</label>
+				<input name="type" type="radio" id="round" value="round"><label for="round">C</label>
+			</div>
+		</section>
+		<section>
+			<h4>
+				<label for="inac">Inactive Text</label>
+			</h4>
+			<input id="inac" name="inac" type="text" value="#555555" class="color-picker inactive" required placeholder="#HEXVAL">
+		</section>
+		<section>
+			<h4>
+				<label for="ac">Active Text</label>
+			</h4>
+			<input id="ac" name="ac" type="text" value="#00FF00" class="color-picker active" required placeholder="#HEXVAL">
+		</section>
+		<section>
+			<h4>
+				<label for="bg">Background</label>
+			</h4>
+			<input id="bg" name="bg" type="text" value="#000000" class="color-picker background" required placeholder="#HEXVAL">
+		</section>
+
+    </body>
+
+    <script type='text/javascript'>
+
+    getQueryString = function(name) {
+	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
+	delChar = function(string, char) {
+		var s = string;
+		while(s.charAt(0) === char) {
+    		s = s.substr(1);
+    	}
+    	return s;
+	}
+
+	setLinkContent = function() {
+		var cFI = delChar(cIN, '#');
+		var cFA = delChar(cAC, '#');
+		var cBG = delChar(cBG, '#');
+
+		$('a.config').attr('href','config.html?type=' + $('input[type]').val() + '&f=' + cFI + '&a=' + cFA + '&b=' + cBG);
+
+		return true;
+	}
+
+	var cFI = getQueryString('f');
+	var cFA = getQueryString('a');
+	var cBG = getQueryString('b');
+	var type = getQueryString('type');
+
+        if(cFI === '') {
+            var colorFontInactive = '#555';
+            console.log('Color for inactive font not defined');
+        } else {
+            var colorFontInactive = '#' + cFI;
+            console.log("Set inactive color to " + cFI);
+        }
+        if(cFA === '') {
+            var colorFontActive = '#0F0';
+            console.log('Color for active font not defined');
+        } else {
+            var colorFontActive = '#' + cFA;
+            console.log("Set active color to " + cFA);
+        }
+        if(cBG === '') {
+            var colorBackground = "#000";
+            console.log('Color for background not defined');
+        } else {
+            $('body').css('background','#' + cBG);
+            var colorBackground = '#' + cBG;
+            console.log("Set background color to " + cBG);
+        }
+        if(type == 'round') {
+        	$('input#round').prop('checked',true);
+        } else if (type == 'block') {
+        	$('input#square').prop('checked',true);
+        } else if (type == 'line') {
+        	$('input#lines').prop('checked',true);
+        } else {
+        	$('input#round').prop('checked',true);
+        }
+
+    $('.inactive').val(colorFontInactive);
+    $('.active').val(colorFontActive);
+    $('.background').val(colorBackground);
+
+    $('input.inactive')
+	  .keyup(function() {
+	  	if ($(this).val().length == 4 || $(this).val().length == 7) {
+	  		var cIN = $(this).val();
+	  		if (cIN == '#000' || cIN == '#000000') {
+	  			cIN = '#111';
+	  		}
+	    	$('.inactive').css('color','' + cIN + '');
+	    	$('.inactive').css('border-color','#59e817');
+	  	} else {
+	  		$('.inactive').css('border-color','#ff2400');
+	  	}
+	  }).keyup();
+	  $('input.active')
+	  .keyup(function() {
+	  	if ($(this).val().length == 4 || $(this).val().length == 7) {
+	  		var cAC = $(this).val();
+	  		if (cAC == '#000' || cAC == '#000000') {
+	  			cAC = '#111';
+	  		}
+	    	$('.active').css('color','' + cAC + '');
+	  		$('.active').css('border-color','#59e817');
+	  	} else {
+	  		$('.active').css('border-color','#ff2400');
+	  	}
+	  }).keyup();
+	  $('input.background')
+	  .keyup(function() {
+	  	if ($(this).val().length == 4 || $(this).val().length == 7) {
+	  		var cBG = $(this).val();
+	  		if (cBG == '#000' || cBG == '#000000') {
+	  			cBG = '#111';
+	  		}
+	    	$('.background').css('color','' + cBG + '');
+	  		$('.background').css('border-color','#59e817');
+	  	} else {
+	  		$('.background').css('border-color','#ff2400');
+	  	}
+	  }).keyup();
+  </script>
+</html>
