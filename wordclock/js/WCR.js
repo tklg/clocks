@@ -1,6 +1,3 @@
-/*Problems: currently treats all 'o'clock' and 'one' as being either 0 or 8 characters long and I dont know why*/
-/*Am assuming this has something to do with the 60-61-0 end value rollover thing thats causing all the other problems*/
-
 var d = new Date();
 var angleS, angleM, angleH = 0;
 var tA = 1;
@@ -13,6 +10,7 @@ var winHeight = $(window).height();
 var winWidth = $(window).width();
 var widthSpace = 10; /*Space width in px*/
 var widthFont = 10; /*font width in px*/
+var doit;
 
 getQueryString = function(name) { //duplicate funstions yay
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -21,44 +19,54 @@ getQueryString = function(name) { //duplicate funstions yay
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+$(window).resize(function() {
+  clearTimeout(doit);
+  doit = setTimeout(function() {
+    wordClockRound.setRads();
+    console.log('resized');
+}, 500);
+});
+
 var cFI = getQueryString('f');
 var cFA = getQueryString('a');
 var cBG = getQueryString('b');
+var typeToLinkTo = getQueryString('type');
 
         if(cFI === '') {
             var colorFontInactive = '#555';
             console.log('Color for inactive font not defined');
         } else {
             var colorFontInactive = '#' + cFI;
-            console.log("Set inactive color to " + cFI);
+            console.log("Set inactive color to #" + cFI);
         }
         if(cFA === '') {
             var colorFontActive = '#0F0';
             console.log('Color for active font not defined');
         } else {
             var colorFontActive = '#' + cFA;
-            console.log("Set active color to " + cFA);
+            console.log("Set active color to #" + cFA);
         }
         if(cBG === '') {
             var colorBackground = "#000";
+            $('body').css('background-color','#000');
             console.log('Color for background not defined');
         } else {
-            $('body').css('background','#' + cBG);
+            var bgColHex = '#' + cBG;
+            $('html').css('background-color',bgColHex);
             var colorBackground = '#' + cBG;
-            console.log("Set background color to " + cBG);
+            console.log("Set background color to #" + $('html').css('background-color') + ' : ' + bgColHex);
         }
-        
 
 var wordClockRound = {
 
     init: function() {
 
-        doitwithjavascriptinsteadofcss(); //best function name
+        setCSS();
 
         if (h > 12) {
             h -= 12; //12 hour time
         }
-		console.log(h+':'+m+':'+s);
+		//console.log(h+':'+m+':'+s);
 
 		$('#a1').css({
             	'-webkit-transform': 'rotate(' + (s * -6 + 6) + 'deg)',
@@ -135,15 +143,42 @@ var wordClockRound = {
         colChange('min');
         colChange('hou');
 
-        $('a.config').attr('href','config.html?type=round&f=' + cFI + '&a=' + cFA + '&b=' + cBG);
-        /*console.log('config url is: config.html/?type=round&f=' + cFI + '&a=' + cFA + '&b=' + cBG);*/
+        setRadius('min');
+        setRadius('and');
+        setRadius('sec');
+        setRadius('seclab');
 
+        //wordClockRound.setTranSpeed.remTrans();
         setInterval(wordClockRound.inc, 1000);
+        in_out.enterAnim();
 
+    },
+
+    setTranSpeed: {
+        hasBeenEnabled: false,
+
+        remTrans: function() {
+            $('.arc').css({
+                '-webkit-transition': 'all 0s ease',
+                'transition': 'all 0s ease',
+            });
+        },
+
+        addTrans: function(speed) {
+            $('.arc').css({
+                '-webkit-transition': 'all '+speed+'s ease',
+                'transition': 'all '+speed+'s ease',
+            });
+        }
     },
 
     inc: function() {
 
+        if (!wordClockRound.setTranSpeed.hasBeenEnabled) {
+            wordClockRound.setTranSpeed.addTrans(0.2);
+            wordClockRound.setTranSpeed.hasBeenEnabled = true;
+            console.log("If this is spamming console something is wrong");
+        }
             tA++;
             angleS -= 6;
             angAnimS = angleS - 0.8;
@@ -161,7 +196,7 @@ var wordClockRound = {
             colChange('sec');
 
             if (tA == 60) {
-            	console.log("minute");
+            	//console.log("minute");
     			angleM -= 6;
             	$('#a2').css({
                 	'-webkit-transform': 'rotate(' + angleM + 'deg)',
@@ -185,14 +220,17 @@ var wordClockRound = {
             	tC = 0;
             }
         //stuff to change the angle of the second/seconds and and
-            wordClockRound.setColors();   
+        wordClockRound.setColors();   
+        wordClockRound.setRads();
+    },
 
+    setRads: function() {
         //change distance between each timestring because words are different lengths
         setRadius('min');
         setRadius('and');
         setRadius('sec');
         setRadius('seclab');
-    }, 
+    },
 
     setColors: function() {
         if (tA > 1) {
@@ -237,7 +275,11 @@ getActive = function(arc) { //get active number
 		if (active > 60) {
 			active = active % 60;
 		}
-		return ['.sec' + (active + 1), '.sec' + active];
+        if (active == 60) {
+            return ['.sec1', '.sec' + active];
+        } else {
+            return ['.sec' + (active + 1), '.sec' + active];
+        }
 	}
 
 	if (arc == 'min') {
@@ -245,7 +287,11 @@ getActive = function(arc) { //get active number
 		if (active > 60) {
 			active = active % 60;
 		}
-		return ['.min' + (active + 1), '.min' + active];
+        if (active == 60) {
+            return ['.min1', '.min' + active];
+        } else {
+		    return ['.min' + (active + 1), '.min' + active];
+        }
 	}
 
 	if (arc == 'hou') {
@@ -253,7 +299,11 @@ getActive = function(arc) { //get active number
 		if (active > 12) {
 			active = active % 12;
 		}
-		return ['.hou' + (active + 1), '.hou' + active];
+        if (active == 60) {
+            return ['.hou1', '.hou' + active];
+        } else {
+		    return ['.hou' + (active + 1), '.hou' + active];
+        }
 	}
 }
 
@@ -272,21 +322,21 @@ setRadius = function(arc) {
         arcAnd.width = (r * 2);
         arcAnd.height = (r * 2);
         arcAnd.radius = r;
-        doitwithjavascriptinsteadofcss();
+        setCSS();
     }
     if (arc == 'sec') {
         r = tw.and();
         arcSeconds.width = (r * 2);
         arcSeconds.height = (r * 2);
         arcSeconds.radius = r;
-        doitwithjavascriptinsteadofcss();
+        setCSS();
     }
     if (arc == 'seclab') {
         r = tw.sec();
         arcSecondsLabel.width = (r * 2);
         arcSecondsLabel.height = (r * 2);
         arcSecondsLabel.radius = r;
-        doitwithjavascriptinsteadofcss();
+        setCSS();
     }
 }
 
@@ -368,7 +418,7 @@ pxToVh = function(px) {
     vh = (px / winHeight) * 100;
     return vh;
 }
-doitwithjavascriptinsteadofcss = function() { //makes it easier to change values of size and stuff
+setCSS = function() { //makes it easier to change values of size and stuff
 
     $('.arc-seconds').css({
         'width':arcSeconds.width + 'vh',
@@ -425,4 +475,45 @@ doitwithjavascriptinsteadofcss = function() { //makes it easier to change values
         '-moz-transform-origin': '-' + arcSecondsLabel.radius + 'vh center',
         'transform-origin': '-' + arcSecondsLabel.radius + 'vh center'
     });
+}
+
+var in_out = {
+    enterAnim: function() {
+        var i = 1;
+        var c = 1;
+        var u = 1;
+
+        var enterAnimation = setInterval(function() {
+            $('span.sec.sec' + i).fadeIn(700);
+            $('span.seconds, span.second').fadeIn(1000);
+            i++;
+            if (i > 61) {
+                //clearInterval(enterAnimation);
+                $('span.min.min' + c).fadeIn(700);
+                $('span.and').fadeIn(1000);
+                c++;
+                if (c > 61) {
+                    $('span.hou.hou' + u).fadeIn(700);
+                    u++;
+                    if (u == 61) {
+                        clearInterval(enterAnimation);
+                    }
+                }
+            }
+        }, 20);
+
+    },
+
+    exitAnim: function() {
+        $('.arc-seconds, .arc-secondslabel').addClass('animated bounceOutDown');
+        setTimeout(function() {
+            $('.arc-minutes, .arc-and').addClass('animated bounceOutLeft');
+            setTimeout(function() {
+            $('.arc-hours').addClass('animated bounceOutRight');
+            }, 300);
+        }, 300);
+        setTimeout(function() {
+            document.location = ($('a.config').attr('linky'));
+        }, 1200);
+    }
 }

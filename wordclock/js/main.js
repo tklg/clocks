@@ -3,37 +3,36 @@
 */
 var wordClock = {
     init: function() {
-        /*colors*/
-/*        var colorFontInactive = '"#' + getQueryString('f') + '"';
-        var colorFontActive = '"#' + getQueryString('a') + '"';
-        var colorBackground = '"#' + getQueryString('b') + '"';
-        console.log(colorFontInactive);
-        console.log(colorFontActive);
-        console.log(colorBackground);*/
-        if (getQueryString('type') == 'round') {
-            $('.arc-seconds').lettering('seconds');
-            $('.arc-minutes').lettering('minutes');
-            $('.arc-hours').lettering('hours');
-            wordClockRound.init();
-            $('#pagestyle').attr('href', 'css/roundclock.css');
-        } else if (getQueryString('type') == 'line') {
-            $('.arc-seconds').lettering('secondsBR');
-            $('.arc-minutes').lettering('minutesBR');
-            $('.arc-hours').lettering('hoursBR');
-            wordClockLine.init();
-            $('#pagestyle').attr('href', 'css/lineclock.css');
-        } else if (getQueryString('type') == 'block') {
-            $('.arc-seconds').lettering('seconds');
-            $('.arc-minutes').lettering('minutes');
-            $('.arc-hours').lettering('hours');
-            wordClockBlock.init();
-            $('#pagestyle').attr('href', 'css/blockclock.css');
-        } else {
-            $('.arc-seconds').lettering('secondsBR');
-            $('.arc-minutes').lettering('minutesBR');
-            $('.arc-hours').lettering('hoursBR');
-            wordClockLine.init();
-            $('#pagestyle').attr('href', 'css/lineclock.css');
+
+        switch (getQueryString('type')) {
+            case 'round':
+                $('.arc-seconds').lettering('seconds');
+                $('.arc-minutes').lettering('minutes');
+                $('.arc-hours').lettering('hours');
+                wordClockRound.init();
+                $('#pagestyle').attr('href', 'css/roundclock.css');
+                break;
+            case 'line':
+                $('.arc-seconds').lettering('secondsBR');
+                $('.arc-minutes').lettering('minutesBR');
+                $('.arc-hours').lettering('hoursBR');
+                wordClockLine.init();
+                $('#pagestyle').attr('href', 'css/lineclock.css');
+                break;
+            case 'square':
+                $('.arc-seconds').lettering('seconds');
+                $('.arc-minutes').lettering('minutes');
+                $('.arc-hours').lettering('hours');
+                wordClockBlock.init();
+                $('#pagestyle').attr('href', 'css/blockclock.css');
+                break;
+            default:
+                $('.arc-seconds').lettering('seconds');
+                $('.arc-minutes').lettering('minutes');
+                $('.arc-hours').lettering('hours');
+                wordClockRound.init();
+                $('#pagestyle').attr('href', 'css/roundclock.css');
+                break;
         }
     }
 } 
