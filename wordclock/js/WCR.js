@@ -299,7 +299,7 @@ getActive = function(arc) { //get active number
 		if (active > 12) {
 			active = active % 12;
 		}
-        if (active == 60) {
+        if (active == 12) {
             return ['.hou1', '.hou' + active];
         } else {
 		    return ['.hou' + (active + 1), '.hou' + active];
