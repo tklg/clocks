@@ -8,8 +8,7 @@
 
 <!-- jQuery v2 -->
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-	<script src="../../js/jquery.min.js"></script>
-
+	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 	<link rel="stylesheet" href="css/config.css">
 		
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -21,30 +20,32 @@
 
   </head>
 	<body>
-<a onCLick="return setLinkContent()" href="index.html?type=round" class='config' style="position:fixed;bottom:20px;color:red">CLOCK</a>	
-		<section>
+<a href="#" linky="" class='config' style="position:fixed;bottom:20px;" onClick="in_out.exitAnim()">CLOCK</a>	
+		<section id='1'>
 		<h4>
 		Type
 		</h4>
 			<div class="color-picker noborder">
+				<form id="typesel">
 				<input name="type" type="radio" id="square" value="square"><label for="square">A</label>
-				<input name="type" type="radio" id="lines" value="lines"><label for="lines">B</label>
+				<input name="type" type="radio" id="lines" value="line"><label for="lines">B</label>
 				<input name="type" type="radio" id="round" value="round"><label for="round">C</label>
+				</form>
 			</div>
 		</section>
-		<section>
+		<section id='2'>
 			<h4>
 				<label for="inac">Inactive Text</label>
 			</h4>
 			<input id="inac" name="inac" type="text" value="#555555" class="color-picker inactive" required placeholder="#HEXVAL">
 		</section>
-		<section>
+		<section id='3'>
 			<h4>
 				<label for="ac">Active Text</label>
 			</h4>
 			<input id="ac" name="ac" type="text" value="#00FF00" class="color-picker active" required placeholder="#HEXVAL">
 		</section>
-		<section>
+		<section id='4'>
 			<h4>
 				<label for="bg">Background</label>
 			</h4>
@@ -54,6 +55,7 @@
     </body>
 
     <script type='text/javascript'>
+    var color = '#222';
 
     getQueryString = function(name) {
 	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -70,21 +72,24 @@
     	return s;
 	}
 
-	setLinkContent = function() {
-		var cFI = delChar(cIN, '#');
-		var cFA = delChar(cAC, '#');
-		var cBG = delChar(cBG, '#');
+	$('a.config').hover(function() {
+		setLinkContent();
+	});
 
-		$('a.config').attr('href','config.html?type=' + $('input[type]').val() + '&f=' + cFI + '&a=' + cFA + '&b=' + cBG);
-
-		return true;
-	}
 
 	var cFI = getQueryString('f');
 	var cFA = getQueryString('a');
 	var cBG = getQueryString('b');
 	var type = getQueryString('type');
 
+        if(cBG === '') {
+            var colorBackground = "#000";
+            console.log('Color for background not defined');
+        } else {
+            $('html').css('background','#' + cBG);
+            var colorBackground = '#' + cBG;
+            console.log("Set background color to " + cBG);
+        }
         if(cFI === '') {
             var colorFontInactive = '#555';
             console.log('Color for inactive font not defined');
@@ -99,14 +104,6 @@
             var colorFontActive = '#' + cFA;
             console.log("Set active color to " + cFA);
         }
-        if(cBG === '') {
-            var colorBackground = "#000";
-            console.log('Color for background not defined');
-        } else {
-            $('body').css('background','#' + cBG);
-            var colorBackground = '#' + cBG;
-            console.log("Set background color to " + cBG);
-        }
         if(type == 'round') {
         	$('input#round').prop('checked',true);
         } else if (type == 'block') {
@@ -116,19 +113,56 @@
         } else {
         	$('input#round').prop('checked',true);
         }
+	setLinkContent = function() {
+		cIN = $('input.inactive').val();
+	  	cAC = $('input.active').val();
+	  	cBG = $('input.background').val();
+		var cFI = delChar(cIN, '#');
+		var cFA = delChar(cAC, '#');
+		var cBG2 = delChar(cBG, '#');
+		var type = $('input[type=radio][name=type]:checked', '#typesel').val();
+		console.log(type);
+
+		$('a.config').attr('linky','index.html?type=' + type + '&f=' + cFI + '&a=' + cFA + '&b=' + cBG2);
+	}
 
     $('.inactive').val(colorFontInactive);
     $('.active').val(colorFontActive);
     $('.background').val(colorBackground);
 
+    var in_out = {
+	    enterAnim: function() {
+	        $('html').animate({backgroundColor: '#000'}, 'slow');
+	        $('#1').addClass('animated bounceInLeft')
+	        $('#2').addClass('animated bounceInDown');
+	        $('#3').addClass('animated bounceInUp');
+	        $('#4').addClass('animated bounceInRight');
+	    },
+
+	    exitAnim: function() {
+	        $('#1').addClass('bounceOutLeft')
+	        $('#2').addClass('bounceOutUp');
+	        $('#3').addClass('bounceOutDown');
+	        $('#4').addClass('bounceOutRight');
+	        $('html').animate({backgroundColor: cBG}, 'slow');
+	        setTimeout(function() {
+	            document.location = ($('a.config').attr('linky'));
+	        }, 700);
+	    }
+	}
+
+    in_out.enterAnim();
+
     $('input.inactive')
 	  .keyup(function() {
 	  	if ($(this).val().length == 4 || $(this).val().length == 7) {
 	  		var cIN = $(this).val();
-	  		if (cIN == '#000' || cIN == '#000000') {
-	  			cIN = '#111';
-	  		}
 	    	$('.inactive').css('color','' + cIN + '');
+	  		if (cIN == colorBackground) {
+	  			color = '#222';
+	  			$('.inactive').css('color','' + color + '');
+	  			console.log('Inactive color was set to black');
+	  		}
 	    	$('.inactive').css('border-color','#59e817');
 	  	} else {
 	  		$('.inactive').css('border-color','#ff2400');
@@ -138,10 +172,12 @@
 	  .keyup(function() {
 	  	if ($(this).val().length == 4 || $(this).val().length == 7) {
 	  		var cAC = $(this).val();
-	  		if (cAC == '#000' || cAC == '#000000') {
-	  			cAC = '#111';
-	  		}
 	    	$('.active').css('color','' + cAC + '');
+	  		if (cAC == colorBackground) {
+	  			color = '#222';
+	  			$('.active').css('color','' + color + '');
+	  			console.log('Active color was set to black');
+	  		}
 	  		$('.active').css('border-color','#59e817');
 	  	} else {
 	  		$('.active').css('border-color','#ff2400');
@@ -151,14 +187,23 @@
 	  .keyup(function() {
 	  	if ($(this).val().length == 4 || $(this).val().length == 7) {
 	  		var cBG = $(this).val();
-	  		if (cBG == '#000' || cBG == '#000000') {
-	  			cBG = '#111';
-	  		}
 	    	$('.background').css('color','' + cBG + '');
+	  		//if (cBG == colorBackground) {
+	  			if (cBG == '#000') { //hardcoded bgcolor; does not change
+	  			//do some colormath here
+	  			color = '#222';
+	  			$('.background').css('color','' + color + '');
+	  			console.log('Background color was set to black');
+	  		}
 	  		$('.background').css('border-color','#59e817');
 	  	} else {
 	  		$('.background').css('border-color','#ff2400');
 	  	}
 	  }).keyup();
+
+	  $(document).keyup(function() {
+	  	setLinkContent();
+	  }).keyup();
+
   </script>
 </html>
