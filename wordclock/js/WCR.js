@@ -484,18 +484,17 @@ var in_out = {
         var u = 1;
 
         var enterAnimation = setInterval(function() {
-            $('span.sec.sec' + i).fadeIn(700);
-            $('span.seconds, span.second').fadeIn(1000);
+            $('span.hou.hou' + i).fadeIn(700);
             i++;
-            if (i > 61) {
-                //clearInterval(enterAnimation);
-                $('span.min.min' + c).fadeIn(700);
-                $('span.and').fadeIn(1000);
+            if (i > 13) {
+                $('span.min.min' + c).fadeIn(1000);
                 c++;
                 if (c > 61) {
-                    $('span.hou.hou' + u).fadeIn(700);
+                    $('span.and').fadeIn(500);
+                    $('span.sec.sec' + u).fadeIn(700);
                     u++;
                     if (u == 61) {
+                        $('span.seconds, span.second').fadeIn(500);
                         clearInterval(enterAnimation);
                     }
                 }
