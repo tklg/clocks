@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color: #000">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 	<link rel="stylesheet" href="css/config.css">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 		
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -20,8 +21,7 @@
 
   </head>
 	<body>
-<a href="#" linky="" class='config' style="position:fixed;bottom:20px;" onClick="in_out.exitAnim()">CLOCK</a>	
-		<section id='1'>
+		<section id='1' class="animated bounceInLeft">
 		<h4>
 		Type
 		</h4>
@@ -33,25 +33,25 @@
 				</form>
 			</div>
 		</section>
-		<section id='2'>
+		<section id='2' class="animated bounceInDown">
 			<h4>
 				<label for="inac">Inactive Text</label>
 			</h4>
 			<input id="inac" name="inac" type="text" value="#555555" class="color-picker inactive" required placeholder="#HEXVAL">
 		</section>
-		<section id='3'>
+		<section id='3' class="animated bounceInUp">
 			<h4>
 				<label for="ac">Active Text</label>
 			</h4>
 			<input id="ac" name="ac" type="text" value="#00FF00" class="color-picker active" required placeholder="#HEXVAL">
 		</section>
-		<section id='4'>
+		<section id='4' class="animated bounceInRight">
 			<h4>
 				<label for="bg">Background</label>
 			</h4>
 			<input id="bg" name="bg" type="text" value="#000000" class="color-picker background" required placeholder="#HEXVAL">
 		</section>
-
+		<a href="#" linky="" class="config animated bounceInDown" onClick="in_out.exitAnim()"><i class="config fa fa-clock-o"></i></a>	
     </body>
 
     <script type='text/javascript'>
@@ -74,6 +74,13 @@
 
 	$('a.config').hover(function() {
 		setLinkContent();
+	});
+
+	$(document).keypress(function(e){
+		if(e.keyCode == 32) { ///space
+			setLinkContent();
+			in_out.exitAnim();
+		}
 	});
 
 
@@ -123,7 +130,7 @@
 		var type = $('input[type=radio][name=type]:checked', '#typesel').val();
 		console.log(type);
 
-		$('a.config').attr('linky','index.html?type=' + type + '&f=' + cFI + '&a=' + cFA + '&b=' + cBG2);
+		$('a.config').attr('linky','index.html?type=' + type + '&f=' + cFI + '&a=' + cFA + '&b=' + cBG2 + '&use=' + getQueryString('use'));
 	}
 
     $('.inactive').val(colorFontInactive);
@@ -133,10 +140,10 @@
     var in_out = {
 	    enterAnim: function() {
 	        $('html').animate({backgroundColor: '#000'}, 'slow');
-	        $('#1').addClass('animated bounceInLeft')
+	        /*$('#1').addClass('animated bounceInLeft')
 	        $('#2').addClass('animated bounceInDown');
 	        $('#3').addClass('animated bounceInUp');
-	        $('#4').addClass('animated bounceInRight');
+	        $('#4').addClass('animated bounceInRight');*/
 	    },
 
 	    exitAnim: function() {
@@ -144,6 +151,8 @@
 	        $('#2').addClass('bounceOutUp');
 	        $('#3').addClass('bounceOutDown');
 	        $('#4').addClass('bounceOutRight');
+	        $('a.config').removeClass('bounceInDown');
+	        $('a.config').addClass('bounceOutUp');
 	        $('html').animate({backgroundColor: cBG}, 'slow');
 	        setTimeout(function() {
 	            document.location = ($('a.config').attr('linky'));

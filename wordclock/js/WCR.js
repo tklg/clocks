@@ -22,7 +22,9 @@ getQueryString = function(name) { //duplicate funstions yay
 $(window).resize(function() {
   clearTimeout(doit);
   doit = setTimeout(function() {
-    wordClockRound.setRads();
+    winHeight = $(window).height();
+    winWidth = $(window).width();
+    wordClockRound.setRads(); //doesnt work
     console.log('resized');
 }, 500);
 });
@@ -505,6 +507,8 @@ var in_out = {
 
     exitAnim: function() {
         $('.arc-seconds, .arc-secondslabel').addClass('animated bounceOutDown');
+        $('a.config').removeClass('bounceInDown');
+        $('a.config').addClass('bounceOutUp');
         setTimeout(function() {
             $('.arc-minutes, .arc-and').addClass('animated bounceOutLeft');
             setTimeout(function() {
