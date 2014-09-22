@@ -1,50 +1,61 @@
 body {
     background: #000;
-    font-size: 17px;
-    overflow: hidden;
-    position: fixed;
+    font-size: 20px;
+    /*overflow: hidden;
+    position: fixed;*/
     width: 100%;
-    color: green;
     /*font-family: 'Coda', cursive;*/
     font-family: 'Cutive Mono';
     /*font-family: monospace;*/
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
     padding: 0px;
-
-
 }
 
-/*.clock {
-	height: 300px;
-	width: 100%;
-	margin-top: 50%;
-}*/
+.clock {
+	position: absolute;
+	width: 50%;
+	margin: auto;
+	left:0; right:0;
+	background: rgba(255,255,255,.05);
+}
 
 .arc {
 	position: relative;
-	margin-right: 10px;
 }
 
 .arc-seconds {
-	/*right: 50px;*/
-	/*width: 150px;*/
+	position: relative;
+	width: 20%;
 	float: right;
-	width: auto;
-	margin-right: 35%;
 }
 
 .arc-minutes {
-	/*right: 250px;*/
-	/*width: 150px;*/
+	position: relative;
+	width: 20%;
 	float: right;
-	width: auto;
 }
 
 .arc-hours {
-	/*right: 500px;*/
-	/*width: 50px;*/
+	position: relative;
+	width: 20%;
 	float: right;
-	width: auto;
-	height: 300px;
+}
+.arc-and, .arc-secondslabel {
+	position: relative;
+	width: 20%;
+	float: right;
+	color: #555;
+}
+.config {
+	position: fixed;
+	font-size: 40px;
+	color: #222;
+	bottom: 10px;
+	left: 15px;
+	-webkit-transition: all .2s ease;
+        transition: all .2s ease;
+}
+.config:hover {
+	color: #444;
 }

@@ -7,7 +7,7 @@
     <title>WordClock</title>
 
     <link href='http://fonts.googleapis.com/css?family=Cutive+Mono' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Coda' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- jQuery v2 -->
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -35,9 +35,13 @@
 		var cFA = getQueryString('a');
 		var cBG = getQueryString('b');
 		var typeToLinkTo = getQueryString('type');
-		$('a.config').attr('linky','config.html?type=' + typeToLinkTo + '&f=' + cFI + '&a=' + cFA + '&b=' + cBG);
+		$('a.config').attr('linky','config.html?type=' + typeToLinkTo + '&f=' + cFI + '&a=' + cFA + '&b=' + cBG + '&use=' + getQueryString('use'));
 
     	wordClock.init();
+
+    	if (getQueryString('use') == 'scr') {
+    		$('a.config').css('visibility', 'hidden');
+    	}
     });
 
     </script>
@@ -48,31 +52,39 @@
 
 		<section class="clock">
 
-			<div class="arc arc-seconds" id="a1">One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen Fifteen Sixteen Seventeen Eighteen Nineteen Twenty Twenty-One Twenty-Two Twenty-Three Twenty-Four Twenty-Five Twenty-Six Twenty-Seven Twenty-Eight Twenty-Nine Thirty Thirty-One Thirty-Two Thirty-Three Thirty-Four Thirty-Five Thirty-Six Thirty-Seven Thirty-Eight Thirty-Nine Forty Forty-One Forty-Two Forty-Three Forty-Four Forty-Five Forty-Six Forty-Seven Forty-Eight Forty-Nine Fifty Fifty-One Fifty-Two Fifty-Three Fifty-Four Fifty-Five Fifty-Six Fifty-Seven Fifty-Eight Fifty-Nine Precisely</div>
-
-			<div class="arc arc-minutes" id="a2">O-One O-Two O-Three O-Four O-Five O-Six O-Seven O-Eight O-Nine Ten Eleven Twelve Thirteen Fourteen Fifteen Sixteen Seventeen Eighteen Nineteen Twenty Twenty-One Twenty-Two Twenty-Three Twenty-Four Twenty-Five Twenty-Six Twenty-Seven Twenty-Eight Twenty-Nine Thirty Thirty-One Thirty-Two Thirty-Three Thirty-Four Thirty-Five Thirty-Six Thirty-Seven Thirty-Eight Thirty-Nine Forty Forty-One Forty-Two Forty-Three Forty-Four Forty-Five Forty-Six Forty-Seven Forty-Eight Forty-Nine Fifty Fifty-One Fifty-Two Fifty-Three Fifty-Four Fifty-Five Fifty-Six Fifty-Seven Fifty-Eight Fifty-Nine O'Clock</div>
-
-			<div class="arc arc-hours" id="a3">One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve</div>
-
-			<div class="arc arc-and" id="a5">
-				<span class='and'>and</span>
-			</div>
-
 			<div class="arc arc-secondslabel" id="a6">
 				<span class='second'>Second</span>
 				<span class='seconds'>Seconds</span>
 			</div>
 
-			<!-- Having to use entire FA for this stupid thing -->
-			<section class="settings rollover">
-			<i class="fa fa-gear"></i>
-			<!-- FOr now, use simple link -->
-			<a href="#" linky="" class='config' style="position:absolute;bottom:20px" onClick="in_out.exitAnim(); return">CONFIG</a>
-			</section>
+			<div class="arc arc-seconds" id="a1">One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen Fifteen Sixteen Seventeen Eighteen Nineteen Twenty Twenty-One Twenty-Two Twenty-Three Twenty-Four Twenty-Five Twenty-Six Twenty-Seven Twenty-Eight Twenty-Nine Thirty Thirty-One Thirty-Two Thirty-Three Thirty-Four Thirty-Five Thirty-Six Thirty-Seven Thirty-Eight Thirty-Nine Forty Forty-One Forty-Two Forty-Three Forty-Four Forty-Five Forty-Six Forty-Seven Forty-Eight Forty-Nine Fifty Fifty-One Fifty-Two Fifty-Three Fifty-Four Fifty-Five Fifty-Six Fifty-Seven Fifty-Eight Fifty-Nine Precisely</div>
+
+			<div class="arc arc-and" id="a5">
+				<span class='and'>and</span>
+			</div>
+
+			<div class="arc arc-minutes" id="a2">O-One O-Two O-Three O-Four O-Five O-Six O-Seven O-Eight O-Nine Ten Eleven Twelve Thirteen Fourteen Fifteen Sixteen Seventeen Eighteen Nineteen Twenty Twenty-One Twenty-Two Twenty-Three Twenty-Four Twenty-Five Twenty-Six Twenty-Seven Twenty-Eight Twenty-Nine Thirty Thirty-One Thirty-Two Thirty-Three Thirty-Four Thirty-Five Thirty-Six Thirty-Seven Thirty-Eight Thirty-Nine Forty Forty-One Forty-Two Forty-Three Forty-Four Forty-Five Forty-Six Forty-Seven Forty-Eight Forty-Nine Fifty Fifty-One Fifty-Two Fifty-Three Fifty-Four Fifty-Five Fifty-Six Fifty-Seven Fifty-Eight Fifty-Nine O'Clock</div>
+
+			<div class="arc arc-hours" id="a3">One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve</div>
 
 		</section>
 
-		<script>
+		<a href="#" linky="" class="config animated bounceInDown" onClick="in_out.exitAnim()"><i class="config fa fa-gear"></i></a>
+
+		<script type="text/javascript">
+		$('a.config').mouseover(function() {
+			$('i.config').addClass('fa-spin');
+		}).mouseout(function() {
+			$('i.config').removeClass('fa-spin');
+		});
+
+		$(document).keypress(function(e){
+			if(e.keyCode == 32) { ///space
+				in_out.exitAnim();
+			}
+		});
+
+
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
